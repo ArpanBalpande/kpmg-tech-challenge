@@ -79,7 +79,7 @@ resource "aws_default_route_table" "this" {
 
   tags = merge(
     {
-      "Name" = "Private"
+      "Name" = "Private_RT"
     },
     var.tags,
   )
@@ -104,13 +104,11 @@ resource "aws_internet_gateway" "this" {
 # Publiс routes
 ################
 resource "aws_route_table" "this" {
-  count = length(var.public_subnets) > 0 ? 1 : 0
-
   vpc_id = aws_vpc.this.id
 
   tags = merge(
     {
-      "Name" = var.public_route_table_names[count.index]
+      "Name" = var.public_route_table
     },
     var.tags,
   )
@@ -118,7 +116,7 @@ resource "aws_route_table" "this" {
 resource "aws_route" "this" {
   count = var.create_igw && length(var.public_subnets) > 0 ? 1 : 0
 
-  route_table_id         = aws_route_table.this[count.index].id
+  route_table_id         = aws_route_table.this.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.this[count.index].id
 }
@@ -126,7 +124,7 @@ resource "aws_route" "this" {
 ################
 # Public subnet
 ################
-resource "aws_subnet" "this" {
+resource "aws_subnet" "public" {
   count = var.create_public_subnet ? length(var.public_subnets) : 0
 
   vpc_id                  = aws_vpc.this.id
@@ -142,9 +140,36 @@ resource "aws_subnet" "this" {
     var.tags,
   )
 }
-resource "aws_route_table_association" "this" {
-  count = length(var.public_subnets) > 0 ? 1 : 0
+resource "aws_route_table_association" "public" {
+  count = length(var.public_subnets) > 0 ? length(var.public_subnets) : 0
 
-  subnet_id      = aws_subnet.this[count.index].id
-  route_table_id = aws_route_table.this[count.index].id
+  subnet_id      = aws_subnet.public[count.index].id
+  route_table_id = aws_route_table.this.id
+}
+
+
+################
+# Public subnet
+################
+resource "aws_subnet" "private" {
+  count = var.create_private_subnet ? length(var.private_subnets) : 0
+
+  vpc_id               = aws_vpc.this.id
+  cidr_block           = element(concat(var.private_subnets, [""]), count.index)
+  availability_zone    = length(regexall("^[a-z]{2}-", element(var.azs, count.index))) > 0 ? element(var.azs, count.index) : null
+  availability_zone_id = length(regexall("^[a-z]{2}-", element(var.azs, count.index))) == 0 ? element(var.azs, count.index) : null
+
+  tags = merge(
+    {
+      "Name" = var.private_subnet_names[count.index]
+    },
+    var.tags,
+  )
+}
+
+resource "aws_route_table_association" "private" {
+  count = length(var.private_subnets) > 0 ? length(var.private_subnets) : 0
+
+  subnet_id      = aws_subnet.private[count.index].id
+  route_table_id = aws_default_route_table.this.id
 }

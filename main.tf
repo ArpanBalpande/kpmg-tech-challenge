@@ -10,7 +10,9 @@ module "vpc" {
   flow_logs_policy_name     = var.flow_logs_policy_name
   public_subnets            = var.public_subnets
   public_subnet_names       = var.public_subnet_names
-  public_route_table_names  = var.public_route_table_names
+  public_route_table  = var.public_route_table
+  private_subnets           = var.private_subnets
+  private_subnet_names      = var.private_subnet_names
   azs                       = var.azs
   tags                      = var.vpc_tags
 }

@@ -21,15 +21,29 @@ output "tags_all" {
 // Public Subnet Outputs
 output "public_subnet_ids" {
   description = "List of IDs of public subnets"
-  value       = aws_subnet.this[*].id
+  value       = aws_subnet.public[*].id
 }
 output "public_subnet_arns" {
   description = "List of ARNs of public subnets"
-  value       = aws_subnet.this[*].arn
+  value       = aws_subnet.public[*].arn
 }
 output "public_subnets_cidr_blocks" {
   description = "List of cidr_blocks of public subnets"
-  value       = aws_subnet.this[*].cidr_block
+  value       = aws_subnet.public[*].cidr_block
+}
+
+// Private Subnet Outputs
+output "private_subnet_ids" {
+  description = "List of IDs of public subnets"
+  value       = aws_subnet.private[*].id
+}
+output "private_subnet_arns" {
+  description = "List of ARNs of public subnets"
+  value       = aws_subnet.private[*].arn
+}
+output "private_subnets_cidr_blocks" {
+  description = "List of cidr_blocks of public subnets"
+  value       = aws_subnet.private[*].cidr_block
 }
 
 // Internet Gateway Outputs

@@ -24,13 +24,19 @@ variable "flow_logs_policy_name" {
 variable "public_subnets" {
   type = list(string)
 }
-variable "public_route_table_names" {
+variable "public_route_table" {
+  type = string
+}
+variable "private_subnets" {
   type = list(string)
 }
 variable "azs" {
   type = list(string)
 }
 variable "public_subnet_names" {
+  type = list(string)
+}
+variable "private_subnet_names" {
   type = list(string)
 }
 variable "map_public_ip_on_launch" {
@@ -42,6 +48,10 @@ variable "create_igw" {
   default = true
 }
 variable "create_public_subnet" {
+  type    = bool
+  default = true
+}
+variable "create_private_subnet" {
   type    = bool
   default = true
 }

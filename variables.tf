@@ -38,7 +38,17 @@ variable "public_subnet_names" {
   default     = []
   description = "name of public_subnets to use"
 }
-variable "public_route_table_names" {
+variable "public_route_table" {
+  type        = string
+  default     = ""
+  description = "name of public_subnets to use"
+}
+variable "private_subnets" {
+  type        = list(string)
+  default     = []
+  description = "List of public_subnets to use"
+}
+variable "private_subnet_names" {
   type        = list(string)
   default     = []
   description = "name of public_subnets to use"
