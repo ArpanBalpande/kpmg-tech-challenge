@@ -53,3 +53,15 @@ variable "vpc_tags" {
   default     = {}
   description = "Additional tags for the VPC"
 }
+
+// Module "natgateway" variables definitions
+variable "natgateway_create" {
+  type        = bool
+  default     = false
+  description = "value"
+}
+variable "nat_gateway_names" {
+  type        = list(string)
+  default     = []
+  description = "value"
+}

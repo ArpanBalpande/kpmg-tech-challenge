@@ -12,3 +12,7 @@ public_route_table_names  = ["Public"]
 vpc_tags = {
   Purpose = "Tech-Challenge"
 }
+
+// "natgateway" module variables values
+natgateway_create = true
+nat_gateway_names = ["NAT-GW-External"]
