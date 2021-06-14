@@ -1,6 +1,6 @@
 module "vpc" {
   // meta-arguments
-  source = "./modules/network"
+  source = "./modules/network/vpc-components"
   // arguments
   name                      = var.vpc_name
   cidr                      = var.vpc_cidr
