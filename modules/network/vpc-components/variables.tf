@@ -55,18 +55,14 @@ variable "create_private_subnet" {
   type    = bool
   default = true
 }
-variable "create_natgateway" {
-  description = "Controls if a natgateway is created"
-  type        = bool
-  default     = true
+variable "destination_cidr_block" {
+  description = "A list of private subnets to be associated"
+  type        = list(string)
+  default     = []
 }
-variable "nat_gateway_name" {
-  description = "Name to be used on all the nat gateways as identifier"
-  type        = string
-  default     = ""
-}
-variable "nat_subnet_id" {
-  description = "subnet id with which nat gateways would be related"
+
+variable "nat_gateway_id" {
+  description = "id of the gateway"
   type        = string
   default     = ""
 }

@@ -85,6 +85,13 @@ resource "aws_default_route_table" "this" {
   )
 }
 
+resource "aws_route" "private" {
+  count                  = length(var.destination_cidr_block)
+  route_table_id         = aws_vpc.this.default_route_table_id
+  destination_cidr_block = var.destination_cidr_block[count.index]
+  nat_gateway_id         = var.nat_gateway_id
+}
+
 ###################
 # Internet Gateway
 ###################
@@ -113,7 +120,7 @@ resource "aws_route_table" "this" {
     var.tags,
   )
 }
-resource "aws_route" "this" {
+resource "aws_route" "public" {
   count = var.create_igw && length(var.public_subnets) > 0 ? 1 : 0
 
   route_table_id         = aws_route_table.this.id
@@ -149,7 +156,7 @@ resource "aws_route_table_association" "public" {
 
 
 ################
-# Public subnet
+# Private subnet
 ################
 resource "aws_subnet" "private" {
   count = var.create_private_subnet ? length(var.private_subnets) : 0

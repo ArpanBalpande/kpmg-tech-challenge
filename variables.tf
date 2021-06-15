@@ -75,3 +75,14 @@ variable "nat_gateway_names" {
   default     = []
   description = "value"
 }
+variable "destination_cidr_block" {
+  type        = list(string)
+  default     = []
+  description = "value"
+}
+variable "public_asg_name" {
+  type = string
+}
+variable "private_asg_name" {
+  type = string
+}
